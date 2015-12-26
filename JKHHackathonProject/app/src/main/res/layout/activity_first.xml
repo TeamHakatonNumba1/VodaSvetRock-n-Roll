@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/ColorPrimaryDark"
+    tools:context="com.jkhteam.jkh_monitoring.activities.FirstRunActivity">
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:id="@+id/view"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.viewpagerindicator.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:padding="10dip"
+        app:radius="7dp"
+        app:strokeWidth="2dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/ColorPrimary"
+        android:id="@+id/view2"
+        android:layout_above="@+id/indicator"
+        android:layout_alignLeft="@+id/view"
+        android:layout_alignStart="@+id/view"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/next"
+        android:id="@+id/textView"
+        android:layout_marginRight="3dp"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/prev"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_marginLeft="3dp"
+        android:id="@+id/textView2"
+        android:layout_alignTop="@+id/indicator"
+        android:layout_alignLeft="@+id/view2"
+        android:layout_alignStart="@+id/view2" />
+
+</RelativeLayout>

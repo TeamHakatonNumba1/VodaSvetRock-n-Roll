@@ -2,6 +2,7 @@ package com.jkhteam.jkh_monitoring.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,7 +52,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
         holder.text.setText(newsList.get(position).getText());
-        holder.date.setText(newsList.get(position).getDate().toString());
+        holder.date.setText(DateFormat.format("dd.MM.yyyy", newsList.get(position).getDate()).toString());
     }
 
     @Override

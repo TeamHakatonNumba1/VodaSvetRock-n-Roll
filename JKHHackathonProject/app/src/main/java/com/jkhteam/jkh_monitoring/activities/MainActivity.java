@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +58,13 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /*int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            LinearLayout linearLayout1 = (LinearLayout)findViewById(R.id.ll1);
+            LinearLayout linearLayout2 = (LinearLayout)findViewById(R.id.ll2);
+            linearLayout1.setBackgroundColor(0xEFEDEB);
+            linearLayout1.setBackgroundColor(0xEFEDEB);
+        }*/
         Log.d(LOGTAG, "Starting activity...");
 
 

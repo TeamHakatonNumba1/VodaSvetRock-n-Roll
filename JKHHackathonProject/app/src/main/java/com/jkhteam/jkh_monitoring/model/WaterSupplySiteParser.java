@@ -67,7 +67,7 @@ public class WaterSupplySiteParser extends AbstractSiteParser {
 				if (descrS.indexOf("<br>") != -1){
 					descrS = descrS.substring(0,descrS.indexOf("<br>"));
 				}
-                descrS.replace("&nbsp;","");
+                descrS.replaceAll("&nbsp;","");
 				
 				//Геокодинг (получаем координаты)
 				//формируем URL
@@ -76,7 +76,7 @@ public class WaterSupplySiteParser extends AbstractSiteParser {
 				street = street.substring(1, street.indexOf(","));
 
 				boolean relation = isRelatedToUser(street);
-				
+                Log.d(LOGTAG,"Water date: " + dateS);
                 //Добавляем новость в список.
                 News news = new News(dateS, WaterSupplySiteParser.SOURCE_CODE,
                     relation, descrS);

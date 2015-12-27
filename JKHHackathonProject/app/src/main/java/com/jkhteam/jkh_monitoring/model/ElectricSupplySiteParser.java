@@ -63,7 +63,7 @@ public class ElectricSupplySiteParser extends AbstractSiteParser {
 				}
 				
                 boolean relation = isRelatedToUser(street);
-				
+				Log.d(LOGTAG,"Electricity date: " + date);
                 News news = new News(date, ElectricSupplySiteParser.SOURCE_CODE,
                     relation, text);
                 newsList.add(news);

@@ -1,6 +1,7 @@
 package com.jkhteam.jkh_monitoring.services;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,11 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.jkhteam.jkh_monitoring.R;
+import com.jkhteam.jkh_monitoring.activities.MainActivity;
 import com.jkhteam.jkh_monitoring.model.*;
 
 import java.util.LinkedList;
@@ -37,6 +41,7 @@ public class BackgroundService extends Service {
     private Timer mTimer;
     private Messenger mClientMessenger = null;
     private NotificationManager mNotificationManager;
+    private NotificationCompat.Builder mNotificationBuilder;
     private static boolean mIsRunning = false;
     private NewsCollector mNewsCollector;
 
@@ -44,17 +49,24 @@ public class BackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(LOGTAG, "Service started");
-        mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        // Create news collector and add parsers.
         mNewsCollector = new NewsCollector();
         AbstractSiteParser parser = new ElectricSupplySiteParser(mNewsCollector);
         mNewsCollector.addSiteParser(parser);
         parser = new WaterSupplySiteParser(mNewsCollector);
         mNewsCollector.addSiteParser(parser);
+        // For notifications.
+        mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        mNotificationBuilder = new NotificationCompat.Builder(this);
+        (new NewsNotificationBackgroundRefresher()).execute();
         // Extract updating time from preferences.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int mins = preferences.getInt("update_time", 0);
+        Log.d(LOGTAG, "Autorefresh time was setted to " + mins + ".");
+        mins = mins != 0 ? mins : 1; // TODO! Create preference with real values.
+        // In next section we pretend to set a timer and news updating...
         // Set timer for automatic news updating.
-        mTimer = new Timer();
+        //mTimer = new Timer();
         // We're gonna repeat our task updating news, each <mins> minutes.
         //mTimer.scheduleAtFixedRate(new NewsUpdateTimerTask(), 0, mins * 60 * 1000);
         mIsRunning = true;
@@ -68,11 +80,28 @@ public class BackgroundService extends Service {
      * Displays a notification in the notification bar.
      */
     private void showNotification(News news) {
-        /*String msg = "Showing news notification. Date: " + news.getDate().toString() + "; Source :"
-                + news.getSource() + "; Reason: " + news.getReason() + "; Bounds: "
-                + news.getBounds();
-        Log.d(LOGTAG, msg);*/
-        // TODO! Using NotificationManager show notification.
+        String msg = "Showing news notification. Date: " + news.getDate().toString() + "; Text :"
+                + news.getText() + "; Relation to user: " + news.isRelatedToUser() + "; Source: "
+                + news.getSource();
+        Log.d(LOGTAG, msg);
+        // Update title, text and icon for the new notification.
+        String notificationTitle = news.getSource().equals(ElectricSupplySiteParser.SOURCE_CODE) ?
+                "Электричество" : "Вода";
+        int iconId = news.getSource().equals(ElectricSupplySiteParser.SOURCE_CODE) ?
+                R.drawable.notification_icon_electro :
+                R.drawable.notification_icon_water;
+        mNotificationBuilder.setContentTitle(notificationTitle)
+                .setContentText(news.getText())
+                .setSmallIcon(iconId);
+        Intent intent = new Intent(this, MainActivity.class);
+        // To create multiple notifications we need to create unique id for each one.
+        int uniqueId = news.hashCode();
+        Log.d(LOGTAG, "Posting notification...\nUnique notification id: " +
+                Integer.toString(uniqueId));
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueId, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        mNotificationBuilder.setContentIntent(pendingIntent);
+        mNotificationManager.notify(uniqueId, mNotificationBuilder.build());
     }
 
     /**
@@ -170,7 +199,7 @@ public class BackgroundService extends Service {
     /**
      * Updates news and displays notifications.
      */
-    class NewsUpdateTimerTask extends TimerTask {
+    /*class NewsUpdateTimerTask extends TimerTask {
         @Override
         synchronized public void run() {
             mNewsCollector.refreshNews();
@@ -179,6 +208,21 @@ public class BackgroundService extends Service {
             for (News news : mNewsCollector.getNews()) {
                 showNotification(news);
             }
+        }
+    }*/
+    class NewsNotificationBackgroundRefresher extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            Log.d(LOGTAG, "Refreshing news (called by timer)...");
+            mNewsCollector.refreshNews();
+            for (News news : mNewsCollector.getNews()) {
+                // If the news item is related to user and we did not post its notification
+                // then we show it.
+                if (news.isRelatedToUser())
+                    showNotification(news);
+            }
+            return null;
         }
     }
 }

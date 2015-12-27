@@ -61,6 +61,7 @@ public class NewsCollector {
      * @return Last updated news.
      */
     public List<News> getNews() {
+        Log.d(MainActivity.LOGTAG, "getting news...");
         return mNewsList;
     }
 
@@ -69,7 +70,7 @@ public class NewsCollector {
      * @return User location.
      */
     String getUserLocation() {
-		//TODO! ������� ��������� userLocation �� ����������
+		//TODO! userLocation
 	return "Ворошиловский район";
     }
 }

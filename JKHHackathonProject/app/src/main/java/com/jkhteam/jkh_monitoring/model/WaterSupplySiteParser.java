@@ -67,6 +67,7 @@ public class WaterSupplySiteParser extends AbstractSiteParser {
 				if (descrS.indexOf("<br>") != -1){
 					descrS = descrS.substring(0,descrS.indexOf("<br>"));
 				}
+                descrS.replace("&nbsp;","");
 				
 				//Геокодинг (получаем координаты)
 				//формируем URL

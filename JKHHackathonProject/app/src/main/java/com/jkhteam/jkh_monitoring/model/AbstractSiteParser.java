@@ -13,11 +13,11 @@ import java.io.IOException;
 /**
  * Created by npcipav on 02.12.2015.
  */
-abstract class AbstractSiteParser {
+public abstract class AbstractSiteParser {
 
     protected NewsCollector mCollector;
 
-	
+	private static final String LOGTAG = "Parsing";
     public AbstractSiteParser(NewsCollector collector) {
         mCollector = collector;
     }
@@ -26,7 +26,7 @@ abstract class AbstractSiteParser {
 	
 	protected boolean isRelatedToUser(String street){
 			try{
-				Log.d(MainActivity.LOGTAG, "chek");
+				Log.d(LOGTAG, "Checking relation to user of " + street);
 				String geocodeURL = "https://geocode-maps.yandex.ru/1.x/?geocode=";	
 				geocodeURL = geocodeURL.concat(street);
 				geocodeURL = geocodeURL.concat("+Ростов");
@@ -55,6 +55,7 @@ abstract class AbstractSiteParser {
 						isRelated = isRelated || (districtE.text().equals(mCollector.getUserLocation()));
 					}
 				}
+				Log.d(LOGTAG, "Relation is " + Boolean.toString(isRelated));
 				return isRelated;
 			} catch (IOException e) {
 				return false;

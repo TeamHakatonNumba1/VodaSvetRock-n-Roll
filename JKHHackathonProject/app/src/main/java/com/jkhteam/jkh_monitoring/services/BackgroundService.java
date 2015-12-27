@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -13,8 +14,7 @@ import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.jkhteam.jkh_monitoring.model.News;
-import com.jkhteam.jkh_monitoring.model.NewsCollector;
+import com.jkhteam.jkh_monitoring.model.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +46,10 @@ public class BackgroundService extends Service {
         Log.d(LOGTAG, "Service started");
         mNotificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mNewsCollector = new NewsCollector();
+        AbstractSiteParser parser = new ElectricSupplySiteParser(mNewsCollector);
+        mNewsCollector.addSiteParser(parser);
+        parser = new WaterSupplySiteParser(mNewsCollector);
+        mNewsCollector.addSiteParser(parser);
         // Extract updating time from preferences.
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         int mins = preferences.getInt("update_time", 0);
@@ -137,13 +141,29 @@ public class BackgroundService extends Service {
                     mClientMessenger = null;
                     break;
                 case MSG_GET_NEWS:
-                    mNewsCollector.refreshNews();
-                    List<News> news = mNewsCollector.getNews();
-                    sendNewsToUI(packNews(news));
+                    Log.d(LOGTAG, "Handling msg_get_news.");
+                    // As refreshing news is hard work we should put it in new thread.
+                    (new NewsBackgroundRefresher()).execute();
                     break;
                 default:
                     super.handleMessage(msg);
             }
+        }
+    }
+
+    /**
+     * Refreshes news in new thread.
+     *
+     * Used in IncomingMessageHandler.
+     */
+    class NewsBackgroundRefresher extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            mNewsCollector.refreshNews();
+            List<News> news = mNewsCollector.getNews();
+            sendNewsToUI(packNews(news));
+            return null;
         }
     }
 

@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
 
     private void autobind() {
         if (!BackgroundService.isRunning()) {
-            Intent intent = new Intent(this, BackgroundService.class);
+            Intent intent = new Intent(MainActivity.this, BackgroundService.class);
             startService(intent);
         }
         doBindService();

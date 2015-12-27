@@ -86,7 +86,8 @@ public class BackgroundService extends Service {
         Log.d(LOGTAG, msg);
         // Update title, text and icon for the new notification.
         String notificationTitle = news.getSource().equals(ElectricSupplySiteParser.SOURCE_CODE) ?
-                "Электричество" : "Вода";
+                getString(R.string.electro_notification_title) :
+                getString(R.string.water_notification_title);
         int iconId = news.getSource().equals(ElectricSupplySiteParser.SOURCE_CODE) ?
                 R.drawable.notification_icon_electro :
                 R.drawable.notification_icon_water;

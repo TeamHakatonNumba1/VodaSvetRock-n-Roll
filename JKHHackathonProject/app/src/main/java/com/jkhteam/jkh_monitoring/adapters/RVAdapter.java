@@ -29,13 +29,11 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
         CardView cardView;
         TextView date;
         TextView text;
-        Toolbar toolbar;
         public NewsViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             date = (TextView) itemView.findViewById(R.id.date);
             text = (TextView) itemView.findViewById(R.id.text);
-            toolbar = (Toolbar) itemView.findViewById(R.id.tool_bar_card_view);
         }
     }
 

@@ -17,7 +17,7 @@ public abstract class AbstractSiteParser {
 
     protected NewsCollector mCollector;
 
-	private static final String LOGTAG = "Parsing";
+	protected static final String LOGTAG = "Parsing";
     public AbstractSiteParser(NewsCollector collector) {
         mCollector = collector;
     }

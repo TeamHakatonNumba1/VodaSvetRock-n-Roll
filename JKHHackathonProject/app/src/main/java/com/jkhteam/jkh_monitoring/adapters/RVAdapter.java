@@ -2,6 +2,7 @@ package com.jkhteam.jkh_monitoring.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,13 +23,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
-        TextView date;
         TextView text;
+        TextView date;
         public NewsViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
-            date = (TextView) itemView.findViewById(R.id.date);
             text = (TextView) itemView.findViewById(R.id.text);
+            date = (TextView) itemView.findViewById(R.id.date);
         }
     }
 
@@ -46,7 +47,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
     @Override
     public void onBindViewHolder(NewsViewHolder holder, int position) {
         holder.text.setText(newsList.get(position).getText());
-        holder.date.setText(newsList.get(position).getDate().toString());
+        holder.date.setText(DateFormat.format("yyyy.MM.dd", newsList.get(position).getDate()).toString());
     }
 
     @Override

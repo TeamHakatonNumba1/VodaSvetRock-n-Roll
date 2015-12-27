@@ -5,16 +5,10 @@
 
         <EditTextPreference
             android:key="@string/street_key"
-            android:title="Улица"
+            android:title="Район"
             android:summary=""
             android:defaultValue=""
-            android:dialogTitle="Введите название улицы" />
-        <EditTextPreference
-            android:key="@string/house_key"
-            android:title="Номер дома"
-            android:summary=""
-            android:defaultValue=""
-            android:dialogTitle="Введите ваш номер дома" />
+            android:dialogTitle="Введите ваш район" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Уведомления">
@@ -29,5 +23,16 @@
             android:title="Электричесво"
             android:summary=""
             android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Новостная лента">
+        <ListPreference
+            android:key="@string/upd_key"
+            android:title="Частота обновления ленты"
+            android:summary=""
+            android:defaultValue="1"
+            android:entries="@array/text_style"
+            android:entryValues="@array/text_style"
+            android:dialogTitle="Выберите частоту обновления ленты" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -3,10 +3,15 @@ package com.jkhteam.jkh_monitoring.adapters;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
+
+import com.jkhteam.jkh_monitoring.activities.MainActivity;
 import com.jkhteam.jkh_monitoring.model.News;
 
 import java.util.List;
@@ -24,11 +29,13 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
         CardView cardView;
         TextView date;
         TextView text;
+        Toolbar toolbar;
         public NewsViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             date = (TextView) itemView.findViewById(R.id.date);
             text = (TextView) itemView.findViewById(R.id.text);
+            toolbar = (Toolbar) itemView.findViewById(R.id.tool_bar_card_view);
         }
     }
 
@@ -59,4 +66,6 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
         if (newsList == null) return 0;
         return newsList.size();
     }
+
+    
 }

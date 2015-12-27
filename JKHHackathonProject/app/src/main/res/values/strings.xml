@@ -38,6 +38,6 @@
     </string-array>
 
     <!-- Strings related to notifications. -->
-    <string name="water_notification_title">Вода</string>
-    <string name="electro_notification_title">Электричество</string>
+    <string name="water_notification_title">Отключение воды в вашем районе</string>
+    <string name="electro_notification_title">Отлючение электричества в вашем районе</string>
 </resources>

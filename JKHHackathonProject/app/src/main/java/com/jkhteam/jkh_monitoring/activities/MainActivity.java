@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import java.io.IOException;
@@ -103,7 +104,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         tabs.setViewPager(pager);
         autobind();
         requestNews();
@@ -176,6 +177,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
                 Message msg = Message.obtain(null, BackgroundService.MSG_GET_NEWS);
                 msg.replyTo = mMessenger;
                 mServiceMessenger.send(msg);
+                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
             } catch (RemoteException e) {
                 // As usual we do nothing.
             }
@@ -228,6 +230,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
                     Bundle bundle = msg.getData();
                     // Manage serializable object.
                     mNewsList = (LinkedList<News>)bundle.getSerializable("value");
+                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
                     break;
                 default:

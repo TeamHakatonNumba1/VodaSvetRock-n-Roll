@@ -8,5 +8,6 @@
     <color name="textColor">#007786</color>
     <color name="dateColor">#718597</color>
     <color name="selectColor">#ffdbbe</color>
+    <color name="my_primary_dark_material_dark">#EFEDEB</color>
 
 </resources>

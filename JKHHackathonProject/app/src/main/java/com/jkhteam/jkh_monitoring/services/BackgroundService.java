@@ -92,11 +92,11 @@ public class BackgroundService extends Service {
                 R.drawable.notification_icon_electro :
                 R.drawable.notification_icon_water;
         mNotificationBuilder.setContentTitle(notificationTitle)
-                .setContentText(news.getText())
+                .setContentText("Нажмите для перехода к новостям")
                 .setSmallIcon(iconId);
         Intent intent = new Intent(this, MainActivity.class);
         // To create multiple notifications we need to create unique id for each one.
-        int uniqueId = news.hashCode();
+        int uniqueId = news.getSource().equals(ElectricSupplySiteParser.SOURCE_CODE) ? 1 : 2;
         Log.d(LOGTAG, "Posting notification...\nUnique notification id: " +
                 Integer.toString(uniqueId));
         PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueId, intent,

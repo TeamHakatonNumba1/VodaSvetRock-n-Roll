@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -42,6 +43,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     private static List<News> newsList = new ArrayList<>();
     private SharedPreferences prefs;
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     public static final String LOGTAG = "MainActivity";
     private Messenger mServiceMessenger = null;
     private ServiceConnection mConnection = this;
@@ -54,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     int Numboftabs =2;
 
     private VPAdapterMain adapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,29 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
             linearLayout1.setBackgroundColor(0xEFEDEB);
         }*/
         Log.d(LOGTAG, "Starting activity...");
+        setContentView(R.layout.tab_power_fragment);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutPower);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                //requestNews();
+                mSwipeRefreshLayout.setRefreshing(false);
+                Log.d(LOGTAG,Boolean.toString(mSwipeRefreshLayout.isRefreshing()));
+            }
+        });
 
+
+        setContentView(R.layout.tab_water_fragment);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutWater);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Refresh items
+                requestNews();
+            }
+        });
+        setContentView(R.layout.activity_main);
 
         setContentView(R.layout.activity_main);
         prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
@@ -91,12 +116,15 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
             }
         });
 
+
         adapter =  new VPAdapterMain(getSupportFragmentManager(),Titles,Numboftabs);
 
         pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
         tabs = (SlidingTabLayout) findViewById(R.id.tabs);
+
+
         tabs.setDistributeEvenly(true);
         tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
             @Override
@@ -104,10 +132,16 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
                 return getResources().getColor(R.color.tabsScrollColor);
             }
         });
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+        //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
         tabs.setViewPager(pager);
+
+
+
+        mSwipeRefreshLayout.setRefreshing(false);
+        //mSwipeRefreshLayout2.setRefreshing(false);
+
         autobind();
-        requestNews();
+        //requestNews();
     }
 
     public static List<News> getNews(String val) {
@@ -177,7 +211,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
                 Message msg = Message.obtain(null, BackgroundService.MSG_GET_NEWS);
                 msg.replyTo = mMessenger;
                 mServiceMessenger.send(msg);
-                findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                //findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
             } catch (RemoteException e) {
                 // As usual we do nothing.
             }
@@ -214,7 +248,13 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
             Log.e(LOGTAG, "Failed to unbind from the service ", t);
         }
     }
+    @Override
+    public void onBackPressed() {
 
+
+
+            //mSwipeRefreshLayout2.setRefreshing(false);
+    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -224,13 +264,17 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
         @Override
         public void handleMessage(Message msg) {
             Log.d(LOGTAG, "Handling message.");
+            mSwipeRefreshLayout.setRefreshing(false);
+            //mSwipeRefreshLayout2.setRefreshing(false);
             switch (msg.what) {
                 case BackgroundService.MSG_POST_NEW_DATA:
                     // Get serializable news from service.
                     Bundle bundle = msg.getData();
                     // Manage serializable object.
                     mNewsList = (LinkedList<News>)bundle.getSerializable("value");
-                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                    //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    //mSwipeRefreshLayout2.setRefreshing(false);
                     adapter.notifyDataSetChanged();
                     break;
                 default:
@@ -243,7 +287,8 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     protected void onResume() {
         super.onResume();
         if (prefs.getBoolean(APP_PREFERENCES_FIRST_RUN, true)){
-            startActivity(new Intent(MainActivity.this, FirstRunActivity.class));
+            //startActivity(new Intent(MainActivity.this, FirstRunActivity.class));
+
             prefs.edit().putBoolean(APP_PREFERENCES_FIRST_RUN, false).apply();
         }
     }

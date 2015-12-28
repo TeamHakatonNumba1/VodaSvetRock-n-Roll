@@ -174,6 +174,7 @@ public class BackgroundService extends Service {
                     Log.d(LOGTAG, "Handling msg_get_news.");
                     // As refreshing news is hard work we should put it in new thread.
                     (new NewsBackgroundRefresher()).execute();
+                    //(new NewsNotificationBackgroundRefresher()).execute(); // DELETE THIS!
                     break;
                 default:
                     super.handleMessage(msg);

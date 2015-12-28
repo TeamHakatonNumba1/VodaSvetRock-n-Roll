@@ -7,7 +7,7 @@
             android:key="@string/street_key"
             android:title="Район"
             android:summary=""
-            android:defaultValue=""
+            android:defaultValue="Ворошиловский район"
             android:dialogTitle="Введите ваш район" />
     </PreferenceCategory>
     <PreferenceCategory

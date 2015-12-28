@@ -1,8 +1,11 @@
 package com.jkhteam.jkh_monitoring.model;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.jkhteam.jkh_monitoring.activities.MainActivity;
+import com.jkhteam.jkh_monitoring.activities.SettingsActivity;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,7 +73,8 @@ public class NewsCollector {
      * @return User location.
      */
     String getUserLocation() {
-		//TODO! userLocation
-	return "Ворошиловский район";
+        //SharedPreferences prefs = PreferenceManager.;
+        //return SettingsActivity.street_name;
+        return "Ворошиловский район";
     }
 }

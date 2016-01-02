@@ -4,6 +4,7 @@
     <string name="action_settings">Настройки</string>
     <string name="about_program">О программе</string>
     <string name="date">Дата:</string>
+    <string name="relation">Район</string>
     <string name="text">Текст</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -22,11 +23,24 @@
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_init_screen">InitScreen</string>
     <string-array name="streetType">
-        <item>Улица</item>
-        <item>Переулок</item>
-        <item>Проспект</item>
-        <item>Площадь</item>
-        <item>Бульвар</item>
+        <item>Ворошиловский район</item>
+        <item>Железнодорожный район</item>
+        <item>Кировский район</item>
+        <item>Ленинский район</item>
+        <item>Октябрьский район</item>
+        <item>Первомайский район</item>
+        <item>Пролетарский район</item>
+        <item>Советский район</item>
+    </string-array>
+    <string-array name="streetValue">
+        <item>Ворошиловский район</item>
+        <item>Железнодорожный район</item>
+        <item>Кировский район</item>
+        <item>Ленинский район</item>
+        <item>Октябрьский район</item>
+        <item>Первомайский район</item>
+        <item>Пролетарский район</item>
+        <item>Советский район</item>
     </string-array>
     <string-array name="text_style">
         <item>6 часов</item>

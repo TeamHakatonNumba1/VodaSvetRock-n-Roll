@@ -50,7 +50,8 @@ public class BackgroundService extends Service {
         super.onCreate();
         Log.d(LOGTAG, "Service started");
         // Create news collector and add parsers.
-        mNewsCollector = new NewsCollector();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        mNewsCollector = new NewsCollector(preferences);
         AbstractSiteParser parser = new ElectricSupplySiteParser(mNewsCollector);
         mNewsCollector.addSiteParser(parser);
         parser = new WaterSupplySiteParser(mNewsCollector);
@@ -60,7 +61,7 @@ public class BackgroundService extends Service {
         mNotificationBuilder = new NotificationCompat.Builder(this);
         (new NewsNotificationBackgroundRefresher()).execute();
         // Extract updating time from preferences.
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         int mins = preferences.getInt("update_time", 0);
         Log.d(LOGTAG, "Autorefresh time was setted to " + mins + ".");
         mins = mins != 0 ? mins : 1; // TODO! Create preference with real values.
@@ -102,7 +103,7 @@ public class BackgroundService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, uniqueId, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         mNotificationBuilder.setContentIntent(pendingIntent);
-        mNotificationManager.notify(uniqueId, mNotificationBuilder.build());
+        //mNotificationManager.notify(uniqueId, mNotificationBuilder.build()); //TODO здесь убрать комменты для того чтобы постились месседжи
     }
 
     /**

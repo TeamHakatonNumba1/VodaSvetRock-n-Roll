@@ -1,5 +1,6 @@
 package com.jkhteam.jkh_monitoring.model;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -22,10 +23,13 @@ public class NewsCollector {
     private List<News> mNewsList;
     private List<AbstractSiteParser> mParsers;
 
-    public NewsCollector() {
+    private SharedPreferences mPreferences;
+    public NewsCollector(SharedPreferences prefs) {
         Log.d(MainActivity.LOGTAG, "collector of news created");
         mNewsList = new LinkedList<News>();
         mParsers = new LinkedList<AbstractSiteParser>();
+        mPreferences = prefs;
+
     }
 
     /**
@@ -73,8 +77,6 @@ public class NewsCollector {
      * @return User location.
      */
     String getUserLocation() {
-        //SharedPreferences prefs = PreferenceManager.;
-        //return SettingsActivity.street_name;
-        return "Ворошиловский район";
+        return mPreferences.getString("streetkey","Ворошиловский район");
     }
 }

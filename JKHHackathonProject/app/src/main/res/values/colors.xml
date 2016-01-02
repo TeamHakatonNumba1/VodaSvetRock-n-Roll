@@ -4,7 +4,7 @@
     <color name="ColorPrimary">#00ACC1</color>
     <color name="ColorPrimaryDark">#80DEEA</color>
     <color name="ColorPrimaryLow">#cde1f1</color>
-    <color name="tabsScrollColor">#FFF59D</color>
+    <color name="tabsScrollColor">#FFF000</color>
     <color name="textColor">#007786</color>
     <color name="dateColor">#718597</color>
     <color name="selectColor">#ffdbbe</color>

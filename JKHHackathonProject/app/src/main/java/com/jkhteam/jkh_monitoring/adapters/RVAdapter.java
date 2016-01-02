@@ -27,6 +27,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
     List<News> newsList;
 
     public static class NewsViewHolder extends RecyclerView.ViewHolder {
+        TextView relation;
         CardView cardView;
         TextView date;
         TextView text;
@@ -35,6 +36,7 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             date = (TextView) itemView.findViewById(R.id.date);
             text = (TextView) itemView.findViewById(R.id.text);
+            relation = (TextView) itemView.findViewById(R.id.relation);
         }
     }
 
@@ -53,6 +55,9 @@ public class RVAdapter extends RecyclerView.Adapter<RVAdapter.NewsViewHolder> {
     public void onBindViewHolder(NewsViewHolder holder, int position) {
         holder.text.setText(newsList.get(position).getText());
         holder.date.setText(DateFormat.format("dd.MM.yyyy", newsList.get(position).getDate()).toString());
+        if (newsList.get(position).isRelatedToUser()) {
+            holder.relation.setText("В вашем районе");
+        }
     }
 
     @Override

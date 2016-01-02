@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -13,26 +14,25 @@ import android.os.RemoteException;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
+import com.jkhteam.jkh_monitoring.R;
+import com.jkhteam.jkh_monitoring.adapters.VPAdapterMain;
+import com.jkhteam.jkh_monitoring.fragments.TabPower;
+import com.jkhteam.jkh_monitoring.fragments.TabWater;
 import com.jkhteam.jkh_monitoring.model.ElectricSupplySiteParser;
 import com.jkhteam.jkh_monitoring.model.News;
-import com.jkhteam.jkh_monitoring.R;
 import com.jkhteam.jkh_monitoring.model.WaterSupplySiteParser;
 import com.jkhteam.jkh_monitoring.services.BackgroundService;
 import com.jkhteam.jkh_monitoring.support.SlidingTabLayout;
-import com.jkhteam.jkh_monitoring.adapters.VPAdapterMain;
+
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity implements ServiceConnection {
 
@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     int Numboftabs =2;
 
     private VPAdapterMain adapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout2;
+    //private SwipeRefreshLayout mSwipeRefreshLayout2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,29 +70,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
             linearLayout1.setBackgroundColor(0xEFEDEB);
         }*/
         Log.d(LOGTAG, "Starting activity...");
-        setContentView(R.layout.tab_power_fragment);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutPower);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                //requestNews();
-                mSwipeRefreshLayout.setRefreshing(false);
-                Log.d(LOGTAG,Boolean.toString(mSwipeRefreshLayout.isRefreshing()));
-            }
-        });
-
-
-        setContentView(R.layout.tab_water_fragment);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayoutWater);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                requestNews();
-            }
-        });
-        setContentView(R.layout.activity_main);
+        /**/
 
         setContentView(R.layout.activity_main);
         prefs = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE);
@@ -137,10 +115,11 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
 
 
 
-        mSwipeRefreshLayout.setRefreshing(false);
+        //mSwipeRefreshLayout.setRefreshing(false);
         //mSwipeRefreshLayout2.setRefreshing(false);
 
         autobind();
+
         //requestNews();
     }
 
@@ -204,7 +183,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
     /**
      * Send request to update news and launch view updating from Service.
      */
-    private void requestNews() {
+    public void requestNews() {
         Log.d(LOGTAG, "Requesting news.");
         if (mIsBound && mServiceMessenger != null) {
             try {
@@ -229,7 +208,7 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
             // They said that service should got crashed before we could do anything with it.
             // So let it be blank.
         }
-        requestNews(); // TODO!
+        //requestNews(); // TODO!
     }
 
     @Override
@@ -264,16 +243,24 @@ public class MainActivity extends ActionBarActivity implements ServiceConnection
         @Override
         public void handleMessage(Message msg) {
             Log.d(LOGTAG, "Handling message.");
-            mSwipeRefreshLayout.setRefreshing(false);
+            //mSwipeRefreshLayout.setRefreshing(false);
             //mSwipeRefreshLayout2.setRefreshing(false);
             switch (msg.what) {
                 case BackgroundService.MSG_POST_NEW_DATA:
                     // Get serializable news from service.
                     Bundle bundle = msg.getData();
                     // Manage serializable object.
+                    TabPower tp = (TabPower) adapter.getItem(1);
+                    TabWater tw = (TabWater) adapter.getItem(0);
+                    if (tp != null) {
+                        tp.stopRefreshing();
+                    }
+                    if (tw != null) {
+                        tw.stopRefreshing();
+                    }
                     mNewsList = (LinkedList<News>)bundle.getSerializable("value");
                     //findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                    mSwipeRefreshLayout.setRefreshing(false);
+
                     //mSwipeRefreshLayout2.setRefreshing(false);
                     adapter.notifyDataSetChanged();
                     break;

@@ -32,6 +32,9 @@ public class SettingsActivity extends PreferenceActivity {
                 finish();
             }
         });
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        street_name = prefs.getString(getString(R.string.street_key), "");
+        house_number = prefs.getString(getString(R.string.house_key), "");
     }
 
     @Override

@@ -3,12 +3,13 @@
     <PreferenceCategory
         android:title="@string/address">
 
-        <EditTextPreference
-            android:key="@string/street_key"
+        <ListPreference
             android:title="Район"
-            android:summary=""
+            android:summary="Выберите район для отображения уведомлений"
+            android:key="@string/street_key"
             android:defaultValue="Ворошиловский район"
-            android:dialogTitle="Введите ваш район" />
+            android:entries="@array/streetType"
+            android:entryValues="@array/streetValue" />
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Уведомления">
@@ -28,7 +29,7 @@
         android:title="Новостная лента">
         <ListPreference
             android:key="@string/upd_key"
-            android:title="Частота обновления ленты"
+            android:title="Частота обновления"
             android:summary=""
             android:defaultValue="1"
             android:entries="@array/text_style"

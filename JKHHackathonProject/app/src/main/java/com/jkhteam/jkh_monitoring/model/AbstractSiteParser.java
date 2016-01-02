@@ -47,12 +47,16 @@ public abstract class AbstractSiteParser {
 				geocodeURL = geocodeURL.concat("&kind=district");
 				//Получаем район по координатам
 				geocoder = Jsoup.connect(geocodeURL).get();
-				String uLocation = "микрорайон Северный";
+
 				boolean isRelated = false;
 				if (geocoder.select("DependentLocalityName").first()!=null){
 					Elements geocodeEC = geocoder.select("DependentLocalityName");
 					for (Element districtE: geocodeEC){
+						//String districtEtext = new String(districtE.text().getBytes("windows-1251"),"UTF-8");
+
 						isRelated = isRelated || (districtE.text().equals(mCollector.getUserLocation()));
+						Log.d(LOGTAG,districtE.text());
+						//Log.d(LOGTAG,mCollector.getUserLocation());
 					}
 				}
 				Log.d(LOGTAG, "Relation is " + Boolean.toString(isRelated));

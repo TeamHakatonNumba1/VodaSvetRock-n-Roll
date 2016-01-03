@@ -28,6 +28,7 @@ public class TabPower extends Fragment implements SwipeRefreshLayout.OnRefreshLi
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayoutPower);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv);
         final LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         llm.setOrientation(LinearLayoutManager.VERTICAL);

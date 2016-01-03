@@ -3,16 +3,12 @@
     android:id="@+id/swipeRefreshLayoutPower"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/my_primary_dark_material_dark"
-        android:id="@+id/ll1">
+
     <android.support.v7.widget.RecyclerView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/rv"/>
-    </LinearLayout>
+
 </android.support.v4.widget.SwipeRefreshLayout>
 
 
